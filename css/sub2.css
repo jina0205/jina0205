@@ -1,0 +1,653 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+ul {
+  list-style: none;
+}
+
+figure {
+  width: fit-content;
+  height: fit-content;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+@font-face {
+  font-family: "Noto_Sans_KR", sans-serif;
+  src: url("../font/Noto_Sans_KR/NotoSansKR-Thin.ttf");
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Noto_Sans_KR", sans-serif;
+  src: url("../font/Noto_Sans_KR/NotoSansKR-Light.ttf");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Noto_Sans_KR", sans-serif;
+  src: url("../font/Noto_Sans_KR/NotoSansKR-Regular.ttf");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Noto_Sans_KR", sans-serif;
+  src: url("../font/Noto_Sans_KR/NotoSansKR-Medium.ttf");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Noto_Sans_KR", sans-serif;
+  src: url("../font/Noto_Sans_KR/NotoSansKR-Bold.ttf");
+  font-weight: 700;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Noto_Sans_KR", sans-serif;
+  src: url("../font/Noto_Sans_KR/NotoSansKR-Black.ttf");
+  font-weight: 900;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Libre_Baskerville";
+  src: url("../font/Libre_Baskerville/LibreBaskerville-Regular.ttf");
+  font-weight: 400;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: "Libre_Baskerville";
+  src: url("../font/Libre_Baskerville/LibreBaskerville-Bold.ttf");
+  font-weight: 700;
+  font-style: normal;
+}
+
+body {
+  font-family: "Noto_Sans_KR";
+  font-weight: 400;
+  color: #000;
+}
+
+/* header */
+header {
+  width: 100%;
+  height: 100px;
+  padding: 0 18px;
+  border-bottom: 1px solid #E6E6E6;
+  background-color: #fff;
+  /* top: 0;
+  left: 0;
+  z-index: 999;
+  background: rgba(255, 255, 255, 0.3);
+  opacity: 0; */
+}
+
+/* header:hover{
+  opacity: 1;
+  background-color: #fff;
+} */
+
+header .header_i {
+  max-width: 1600px;
+  height: 100%;
+  margin: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header .header_i .header_left .left_icon {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  cursor: pointer;
+}
+
+header .header_i .header_left .left_icon p {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+}
+
+header .header_i .header_right .right_icon {
+  display: flex;
+  gap: 32px;
+  cursor: pointer;
+}
+
+/* /header */
+
+/* hero */
+.hero {
+  width: 100%;
+  min-height: 70vh;
+  background-image: url(../img/sub2/subhero.png);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
+/* /hero */
+
+/* story */
+.story {
+  width: 100%;
+  padding: 0 18px;
+  margin-top: 250px;
+}
+
+.story .story_i {
+  max-width: 1600px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 32px;
+}
+
+.story .story_i .story_img {
+  grid-column: 1/7;
+  width: 100%;
+  height: 100%;
+}
+
+.story .story_i .story_text {
+  grid-column: 8/13;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+  justify-content: center;
+}
+
+.story .story_i .story_text h2 {
+  font-size: 24px;
+  color: #36413A;
+}
+
+.story .story_i .story_text p {
+  font-size: 20px;
+  line-height: 1.8;
+}
+
+/* /story */
+
+/* croissants */
+.croissants {
+  width: 100%;
+  padding: 0 18px;
+  margin-top: 250px;
+}
+
+.croissants .croissants_i {
+  max-width: 1600px;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+  align-items: center;
+  text-align: center;
+}
+
+.croissants .croissants_i .croissants_title {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.croissants .croissants_i .croissants_title .e {
+  font-family: "Libre_Baskerville";
+  font-weight: 700;
+  font-size: 24px;
+  color: #36413A;
+}
+
+.croissants .croissants_i .croissants_title .k {
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.croissants .croissants_i .croissants_img {
+  display: flex;
+  justify-content: center;
+}
+
+.croissants .croissants_i .croissants_img .img_left {
+  position: relative;
+  left: 10px;
+}
+
+.croissants .croissants_i .croissants_img .img_right {
+  position: relative;
+  left: -10px;
+}
+
+.croissants .croissants_i .croissants_text {
+  font-size: 20px;
+  line-height: 1.8;
+}
+
+/* /croissants */
+
+/* product */
+.product {
+  width: 100%;
+  padding: 0 18px;
+  margin-top: 250px;
+}
+
+.product .product_i {
+  max-width: 1600px;
+  margin: auto;
+}
+
+.product .product_i .product_title {
+  display: flex;
+  flex-direction: column;
+}
+
+.product .product_i .product_title .e {
+  font-family: "Libre_Baskerville";
+  font-weight: 700;
+  font-size: 24px;
+  color: #36413A;
+}
+
+.product .product_i .product_title .k {
+  font-size: 20px;
+}
+
+.product .product_i .product_contents {
+  width: 100%;
+  margin-top: 60px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.product .product_i .product_contents .box {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 32px;
+  border-top: 1px solid #E6E6E6;
+  padding-top: 24px;
+  align-items: center;
+}
+
+.product .product_i .product_contents .box .img {
+  grid-column: 1/3;
+  position: relative;
+  cursor: pointer;
+}
+
+.product .product_i .product_contents .box .img p {
+  font-family: "Libre_Baskerville";
+  font-weight: 700;
+  font-size: 20px;
+  color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+}
+
+.product .product_i .product_contents .box .img:hover>p {
+  opacity: 1;
+}
+
+.product .product_i .product_contents .box .text {
+  grid-column: 4/9;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.product .product_i .product_contents .box .text .text_t {
+  font-size: 20px;
+  font-family: "Libre_Baskerville";
+  font-weight: 700;
+  color: #36413A;
+}
+
+.product .product_i .product_contents .box .text .text_m {
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+.product .product_i .product_contents .box .text .text_b ul {
+  display: flex;
+  gap: 16px;
+}
+
+.product .product_i .product_contents .box .text .text_b ul li {
+  font-size: 18px;
+  color: #E6E6E6;
+  cursor: pointer;
+}
+
+.product .product_i .product_contents .box .text .text_b ul li:not(:last-child)::after {
+  content: '';
+  display: inline-block;
+  width: 1px;
+  height: 14px;
+  background-color: #E6E6E6;
+  margin-left: 16px;
+}
+
+.product .product_i .product_contents .box .text .text_b ul li:hover {
+  color: #808080;
+}
+
+.product .product_i .product_contents .box .per {
+  grid-column: 10/13;
+  font-size: 18px;
+  color: #808080;
+  line-height: 1.8;
+}
+
+/* /product */
+
+/* banner */
+.banner {
+  width: 100%;
+  padding: 0 32px;
+  margin-top: 250px;
+  min-height: 60vh;
+  background-image: url(../img/sub2/banner.png);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+}
+
+.banner .banner_text {
+  font-size: 20px;
+  color: #F9F6F2;
+  line-height: 1.8;
+}
+
+/* /banner */
+
+/* info */
+.info {
+  width: 100%;
+  padding: 0 18px;
+  margin-top: 250px;
+}
+
+.info .info_i {
+  max-width: 1600px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 32px;
+  display: flex;
+}
+
+.info .info_i .info_left {
+  grid-column: 1/7;
+  border: 2px solid #E6E6E6;
+}
+
+.info .info_i .info_left:hover {
+  background-color: #36413A;
+  color: #fff;
+}
+
+.info .info_i .info_left .box {
+  padding: 32px 104px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.info .info_i .info_left .box .box_title .e {
+  font-family: "Libre_Baskerville";
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.info .info_i .info_left .box .box_title .k {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.info .info_i .info_left .box .box_text {
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+.info .info_i .info_right {
+  grid-column: 9/13;
+  border: 2px solid #E6E6E6;
+}
+
+.info .info_i .info_right:hover {
+  background-color: #36413A;
+  color: #fff;
+}
+
+.info .info_i .info_right .box {
+  padding: 32px 104px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.info .info_i .info_right .box .box_title .e {
+  font-family: "Libre_Baskerville";
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.info .info_i .info_right .box .box_title .k {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.info .info_i .info_right .box .box_text {
+  font-size: 18px;
+  line-height: 1.8;
+}
+
+/* /info */
+
+/* footer */
+footer {
+  width: 100%;
+  min-height: 500px;
+  background-color: #36413A;
+  padding: 24px 18px;
+  margin-top: 150px;
+}
+
+footer .footer_i {
+  max-width: 1600px;
+  height: 100%;
+  margin: auto;
+  color: #F9F6F2;
+  font-size: clamp(12px,1.5vw,16px);
+  display: flex;
+  flex-direction: column;
+  gap: 72px;
+  justify-content: center;
+}
+
+footer .footer_i .fmenu ul {
+  display: flex;
+  gap: 0 40px;
+}
+
+footer .footer_i .finfo {
+  display: flex;
+  flex-direction: column;
+  gap: 14px 0;
+  font-family: "Libre_Baskerville";
+  font-weight: 400;
+}
+
+footer .footer_i .finfo .finfo_top {
+  display: flex;
+  gap: 24px;
+  flex-basis: 100%;
+}
+
+footer .footer_i .finfo .finfo_btm {
+  display: flex;
+  gap: 24px;
+  flex-basis: 100%;
+}
+
+footer .footer_i .copy {
+  display: flex;
+  justify-content: space-between;
+}
+
+footer .footer_i .copy p {
+  font-family: "Libre_Baskerville";
+  font-weight: 400;
+}
+
+footer .footer_i .copy .icon {
+  font-size: clamp(26px,28px,32px);
+  cursor: pointer;
+}
+
+/* /footer */
+
+@media screen and (max-width:1024px) {
+  header {
+    height: 80px;
+  }
+
+  header .header_i {
+    max-width: 864px;
+    flex-direction: row-reverse;
+  }
+
+  header .header_i .logo {
+    width: 160px;
+    height: 40px;
+  }
+
+  header .header_i .header_right {
+    display: none;
+  }
+
+  .hero {
+    min-height: 30vh;
+  }
+
+  .story {
+    margin-top: 200px;
+  }
+
+  .story .story_i {
+    max-width: 864px;
+    grid-template-columns: repeat(8, 1fr);
+    gap: 16px;
+  }
+
+  .story .story_i .story_img {
+    grid-column: 1/5;
+  }
+
+  .story .story_i .story_text {
+    grid-column: 5/9;
+    gap: 32px;
+  }
+
+  .story .story_i .story_text h2 {
+    font-size: 20px;
+  }
+
+  .story .story_i .story_text p {
+    font-size: 16px;
+  }
+
+  .croissants {
+    margin-top: 200px;
+  }
+
+  .croissants .croissants_i {
+    max-width: 864px;
+    gap: 48px;
+  }
+
+  .croissants .croissants_i .croissants_title .e {
+    font-size: 20px;
+  }
+
+  .croissants .croissants_i .croissants_title .k {
+    font-size: 20px;
+  }
+
+  .croissants .croissants_i .croissants_text {
+    font-size: 16px;
+  }
+
+  .product {
+    margin-top: 200px;
+  }
+
+  .product .product_i {
+    max-width: 864px;
+  }
+
+  .product .product_i .product_title .e {
+    font-size: 20px;
+  }
+
+  .product .product_i .product_title .k {
+    font-size: 16px;
+  }
+
+  .product .product_i .product_contents {
+    margin-top: 48px;
+  }
+
+  .product .product_i .product_contents .box {
+    grid-template-columns: repeat(8, 1fr);
+    gap: 16px;
+    display: flex;
+  }
+
+  .product .product_i .product_contents .box .img {
+    grid-column: 1/4;
+  }
+
+  .product .product_i .product_contents .box .img p {
+    font-size: 16px;
+  }
+
+  .product .product_i .product_contents .box .text {
+    grid-column: 6/9;
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media screen and (max-width:767px) {
+    footer .footer_i .fmenu {
+      display: none;
+    }
+  }
+}
