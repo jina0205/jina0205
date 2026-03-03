@@ -97,6 +97,7 @@ header {
   z-index: 999;
   background: rgba(255, 255, 255, 0.9);
   transition: all .3s;
+  display: none;
 }
 
 header .header_i {
@@ -240,6 +241,10 @@ header .header_i .header_right .right_icon {
 }
 
 /* intro */
+body.intro-lock {
+  overflow: hidden !important;
+}
+
 .intro {
   position: relative;
   width: 100%;
@@ -247,10 +252,10 @@ header .header_i .header_right .right_icon {
   overflow: hidden;
 }
 
+/* 배경+슬로건 레이어 */
 .intro_i {
   position: absolute;
-  width: 100%;
-  height: 100%;
+  inset: 0;
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -259,7 +264,14 @@ header .header_i .header_right .right_icon {
   text-align: center;
   background-color: #333;
   z-index: 2;
-  transition: opacity 1s ease;
+  opacity: 1;
+  transition: opacity 0.9s ease; /* JS setTimeout(950ms)랑 맞춤 */
+}
+
+/* 첫 스크롤/터치 시 배경+문구 레이어 걷히기 */
+.intro.reveal .intro_i {
+  opacity: 0;
+  pointer-events: none;
 }
 
 .intro .intro_i .title {
@@ -270,9 +282,9 @@ header .header_i .header_right .right_icon {
   gap: 24px;
   align-items: center;
   justify-content: center;
-  text-align: center;
 }
 
+/* 문구 등장 애니메이션 */
 .intro .intro_i .title p {
   opacity: 0;
   transform: translateY(20px);
@@ -301,10 +313,7 @@ header .header_i .header_right .right_icon {
 /* video */
 .video_wrap {
   position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
+  inset: 0;
   z-index: 1;
 }
 
@@ -314,15 +323,13 @@ header .header_i .header_right .right_icon {
   object-fit: cover;
 }
 
-/* /video */
-
 /* story(section01) */
 .story {
   width: 100%;
   margin-top: 300px;
   padding: 0 18px;
-  min-height: 400vh;
   position: relative;
+  height: 400vh;
 }
 
 .story_container {
@@ -341,15 +348,16 @@ header .header_i .header_right .right_icon {
   height: 100vh;
 }
 
+/* 왼쪽 텍스트 */
 .story .story_container .story_i .story_text {
   grid-column: 1/6;
   align-self: center;
-  position: static;
+  position: relative;
+  z-index: 5; /* 이미지보다 위로 */
 }
 
 .story .story_container .story_i .story_text .title h1 {
   font-size: clamp(24px, 2.5vw, 36px);
-  /* font-size: 36px; */
   font-family: "Libre_Baskerville";
   font-weight: 700;
   border-bottom: 1px solid #E6E6E6;
@@ -359,7 +367,6 @@ header .header_i .header_right .right_icon {
 
 .story .story_container .story_i .story_text .text p {
   font-size: clamp(16px, 2vw, 20px);
-  /* font-size: 20px; */
   color: #333333;
   margin: 24px 0;
   font-weight: 500;
@@ -367,75 +374,81 @@ header .header_i .header_right .right_icon {
 
 .story .story_container .story_i .story_text .text span {
   font-size: clamp(14px, 1.3vw, 18px);
-  /* font-size: 18px; */
   line-height: 1.8;
 }
 
+/* 오른쪽 이미지 영역 */
 .story .story_container .story_i .story_img {
   grid-column: 7/13;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  justify-content: center;
   height: 100vh;
+  position: relative; /* imgbox absolute 기준 */
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
+/* ✅ 핵심: imgbox는 겹쳐두고 active만 보이게 */
 .story .story_container .story_i .imgbox {
   max-width: 650px;
   width: 100%;
-  opacity: 0;
-  transition: all 0.6s ease-out;
-  margin-bottom: 0;
+  margin-left: auto;
+
   position: absolute;
+  inset: 0;
   top: 50%;
+  right: 0;            /* 우측 정렬 */
   transform: translateY(-50%);
+
+  opacity: 0;
+  pointer-events: none; /* 숨겨진 것 클릭 방지 */
+  transition: opacity 0.6s ease; /* 전환은 opacity만 */
+  z-index: 1;
 }
 
 .story .story_container .story_i .imgbox.active {
   opacity: 1;
-  transform: translateY(-50%);
+  pointer-events: auto;
+  z-index: 2;
 }
 
 .story .story_container .story_i .imgbox img {
   width: 100%;
+  height: auto;
+  display: block;
 }
 
+/* 이미지 위 텍스트 */
 .story .story_container .story_i .imgbox .img_text {
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
+  inset: 0;
+  z-index: 3;
+
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+
   padding: 32px;
   line-height: 1.8;
 }
 
 .story .story_container .story_i .imgbox .img_text .title .k {
   font-size: clamp(16px, 2vw, 20px);
-  /* font-size: 20px; */
   margin-bottom: 10px;
   color: #F9F6F2;
 }
 
 .story .story_container .story_i .imgbox .img_text .title .e {
   font-size: clamp(16px, 2vw, 20px);
-  /* font-size: 20px; */
   font-family: "Libre_Baskerville";
   font-weight: 400;
   color: #F9F6F2;
 }
 
 .story .story_container .story_i .imgbox .img_text .text {
-  font-size: clamp(12px, 14px, 16px);
   font-size: 16px;
   font-weight: 500;
   color: #F9F6F2;
 }
-
 /* /story(section01) */
 
 /* croissants(section02) */
@@ -460,7 +473,7 @@ header .header_i .header_right .right_icon {
 
 .croissants .croissants_i .left img {
   width: 100%;
-  height: 100%;
+  height: auto;
 }
 
 .croissants .croissants_i .right {
@@ -537,6 +550,11 @@ header .header_i .header_right .right_icon {
 .croissants .croissants_i .right .right_btm .btm_img .imgbox {
   display: flex;
   gap: 48px;
+}
+
+.croissants .croissants_i .right .right_btm .btm_img .imgbox figure{
+  width: auto;
+  height: auto;
 }
 
 /* /croissant(section02) */
@@ -858,6 +876,10 @@ footer .footer_i .copy .icon {
 
 /* /footer */
 
+@media (min-width:1025px){
+  .story{ height:400vh; }  /* 스크롤 길이 유지 */
+}
+
 @media screen and (max-width:1024px) {
   header {
     height: 80px;
@@ -905,57 +927,80 @@ footer .footer_i .copy .icon {
 
   .story {
     margin-top: 250px;
+    height: auto;
   }
 
-  .story .story_i {
+  .story .story_container .story_scroll {
+    display: none;
+    height: 0;
+  }
+
+  .story .story_container .story_i {
     max-width: 864px;
-    grid-template-columns: repeat(8, 1fr);
+    grid-template-columns: repeat(8,1fr);
     gap: 16px;
+    position: relative;
+    top: auto;
+    height: auto;
+    align-items: start;
   }
 
-  .story .story_i .story_text {
+  .story .story_container .story_i .story_text {
     grid-column: 1/9;
   }
 
-  .story .story_i .story_text .title h1 {
+  .story .story_container .story_i .story_text .title h1 {
     font-size: clamp(16px, 3vw, 24px);
     padding-bottom: 16px;
   }
 
-  .story .story_i .story_text .text p {
+  .story .story_container .story_i .story_text .text p {
     font-size: clamp(14px, 2.5vw, 16px);
     margin: 20px 0;
   }
 
-  .story .story_i .story_text .text span {
+  .story .story_container .story_i .story_text .text span {
     font-size: clamp(12px, 2vw, 14px);
   }
 
-  .story .story_i .story_img {
+  .story .story_container .story_i .story_img {
     grid-column: 1/9;
+    height: auto;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 16px;
     margin-top: 50px;
+    position: relative;
+    align-items: stretch;
+    justify-content: stretch;
   }
 
-  .story .story_i .imgbox {
+  .story .story_container .story_i .story_img .imgbox {
+    position: relative; 
+    inset: auto;
+    top: auto;
+    right: auto;
+    left: auto;
+    transform: none;
+
+    opacity: 1;
+    pointer-events: auto;
+    transition: none;
+
     max-width: unset;
-    margin-left: unset;
-    margin-right: unset;
+    width: 100%;
+    margin-left: 0;
+    z-index: auto;
   }
 
-  .story .story_i .imgbox .img_text .title .k {
-    font-size: clamp(14px, 2vw, 16px);
+   .story .story_container .story_i .story_img .imgbox .img_text .title .k,
+  .story .story_container .story_i .story_img .imgbox .img_text .title .e{
+    font-size: clamp(10px, 0.63vw + 7.54px, 16px);
     margin-bottom: 4px;
   }
 
-  .story .story_i .imgbox .img_text .title .e {
-    font-size: clamp(14px, 2vw, 16px);
-  }
-
-  .story .story_i .imgbox .img_text .text {
-    font-size: 12px;
+  .story .story_container .story_i .imgbox .img_text .text{
+    font-size: clamp(10px, 0.63vw + 7.54px, 14px);;
   }
 
   .croissants {
@@ -1012,6 +1057,11 @@ footer .footer_i .copy .icon {
   .croissants .croissants_i .right .right_btm .btm_img .imgbox {
     gap: 22px;
   }
+
+  .croissants .croissants_i .right .right_btm .btm_img .imgbox figure{
+  width: auto;
+  height: auto;
+}
 
   .product {
     margin-top: 250px;
@@ -1175,21 +1225,148 @@ footer .footer_i .copy .icon {
 }
 
 @media screen and (max-width:767px) {
+  .story .story_container .story_i {
+    grid-template-columns: repeat(12, 1fr);
+    gap: 16px;
+    position: relative; /* sticky 해제 */
+    top: auto;
+    height: auto; /* 100vh 해제 */
+    align-items: start;
+    padding-bottom: 50px;
+  }
+
+  .story .story_container .story_i .story_text {
+    grid-column: 1/13; /* 전체 너비 사용 */
+    align-self: start; /* 상단 정렬 */
+  }
+
+  .story .story_container .story_i .story_img {
+    grid-column: 1/13; /* 전체 너비 사용 */
+    height: auto;
+    display: block; /* 4개의 imgbox가 수직으로 쌓임 */
+    margin-top: 30px;
+    position: relative;
+  }
+
+  .story .story_container .story_i .story_img .imgbox {
+    position: relative; /* 텍스트를 absolute로 배치하기 위해 유지 */
+    inset: auto;
+    transform: none;
+
+    opacity: 1; /* 항상 보이게 */
+    pointer-events: auto;
+    transition: none;
+
+    max-width: 100%;
+    width: 100%;
+    margin-left: 0;
+    margin-bottom: 30px; /* ✅ 이미지 사이에 간격 추가 */
+    z-index: auto;
+  }
+
   footer .footer_i .fmenu {
     display: none;
   }
 
-  .croissants .croissants_i .croissants_img {
-    display: flex;
+   /* croissants: 1컬럼 스택 */
+  .croissants .croissants_i{
+    grid-template-columns: 1fr;
     gap: 16px;
+  }
+  .croissants .croissants_i .left,
+  .croissants .croissants_i .right{
+    grid-column: 1 / -1;
+  }
+
+  .croissants .croissants_i .left img{
+    width: 100%;
+    height: auto;
+  }
+
+  /* 1024에서 준 고정 높이 해제 */
+  .croissants .croissants_i .right{
+    height: auto;
+  }
+  .croissants .croissants_i .right .right_top{
+    gap: 16px; /* 125px 줄이기 */
+  }
+
+  /* ✅ 썸네일: 2개만 보이게 + 가로 스크롤 */
+  .croissants .croissants_i .right .right_btm .btm_img{
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px; /* 스크롤바/여백 */
+    cursor: grab;
+  }
+  .croissants .croissants_i .right .right_btm .btm_img:active{
+    cursor: grabbing;
   }
 
-  .croissants .croissants_i .croissants_img a {
-    flex: 0 0 calc(50% - 8px);
+  .croissants .croissants_i .right .right_btm .btm_img .imgbox{
+    display: flex;
+    gap: 14px;
+    flex-wrap: nowrap;
+    width: max-content; /* ✅ 내용만큼 늘어나게 */
   }
 
-  .croissants .croissants_i .croissants_img img {
+  /* “한 화면에 2개” 고정 */
+  .croissants .croissants_i .right .right_btm .btm_img .imgbox figure{
+    flex: 0 0 calc((100vw - 18px*2 - 14px) / 2);
+    /* 100vw에서 좌우 padding(18*2)과 gap(14) 빼고 2등분 */
+  }
+
+  .croissants .croissants_i .right .right_btm .btm_img .imgbox img{
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  /* === Croissants 레이아웃 고정 === */
+  .croissants .croissants_i{
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .croissants .croissants_i .left,
+  .croissants .croissants_i .right{
+    grid-column: 1 / -1;
+  }
+
+  /* 상단 메인 이미지 */
+  .croissants .croissants_i .left img{
+    width: 100%;
+    height: auto;
+    max-height: 45vh;
+    object-fit: cover;
+  }
+
+  /* 1024 고정 높이 완전 해제 */
+  .croissants .croissants_i .right{
+    height: auto;
+  }
+
+  /* === 썸네일 스크롤 영역 === */
+  .croissants .croissants_i .right .right_btm .btm_img{
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 12px;
+  }
+
+  /* 트랙 */
+  .croissants .croissants_i .right .right_btm .btm_img .imgbox{
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 14px;
+  }
+
+  /* 카드: 한 화면에 2개 */
+  .croissants .croissants_i .right .right_btm .btm_img .imgbox figure{
+    width: 100%;
+    flex: 0 0 calc((100% - 14px) / 2);
+  }
+
+  .croissants .croissants_i .right .right_btm .btm_img .imgbox figure img{
     width: 100%;
     height: auto;
     display: block;
@@ -1277,13 +1454,11 @@ footer .footer_i .copy .icon {
     font-size: 12px;
   }
 
-  .story .story_i .story_img {
-    width: 100%;
-    overflow: hidden;
-    grid-column: 1/-1;
-    display: flex;
-    flex-direction: column;
-    align-items: center
+  .story .story_container .story_i .story_img {
+    display:grid;
+    grid-template-columns: 1fr; /* ✅ 1열 */
+    gap:14px;
+    margin-top:24px
   }
 
   .story .story_i .imgbox {
@@ -1312,8 +1487,7 @@ footer .footer_i .copy .icon {
 
   .croissants .croissants_i {
     max-width: 358px;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
+    grid-template-columns: 1fr;
   }
 
   .croissants .croissants_i .left {

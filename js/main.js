@@ -1,151 +1,135 @@
 $(function () {
 
-  // header
-  $(window).on("scroll", function () {
-    if ($(this).scrollTop() > $(".intro").height()) {
+  /* =====================
+     HEADER
+  ===================== */
+  function headerToggle() {
+    if ($(window).scrollTop() > $(".intro").height()) {
       $("header").fadeIn();
     } else {
       $("header").fadeOut();
     }
+  }
+  $(window).on("scroll", headerToggle);
+  headerToggle(); // 진입 시 1회 적용
+
+
+  /* =====================
+     SIDEBAR
+  ===================== */
+  $("#hamburgerBtn").on("click", openSidebar);
+  $("#closeBtn, #sidebarOverlay").on("click", closeSidebar);
+
+  $(document).on("keydown", function (e) {
+    if (e.key === "Escape") closeSidebar();
   });
 
-
-  // sidebar
-  $('#hamburgerBtn').on('click', function () {
-    openSidebar();
-  });
-
-  $('#closeBtn').on('click', function () {
+  $(".menu-item, .submenu-item").on("click", function () {
     closeSidebar();
   });
 
-  $('#sidebarOverlay').on('click', function () {
-    closeSidebar();
-  });
-
-  $(document).on('keydown', function (e) {
-    if (e.key === 'Escape') {
-      closeSidebar();
-    }
-  });
+  $(window).on("resize", closeSidebar);
 
   function openSidebar() {
-    $('#sidebar').addClass('active');
-    $('#sidebarOverlay').addClass('active');
-    $('body').css('overflow', 'hidden');
+    $("#sidebar").addClass("active");
+    $("#sidebarOverlay").addClass("active");
+    $("body").css("overflow", "hidden");
   }
 
   function closeSidebar() {
-    $('#sidebar').removeClass('active');
-    $('#sidebarOverlay').removeClass('active');
-    $('body').css('overflow', 'auto');
+    $("#sidebar").removeClass("active");
+    $("#sidebarOverlay").removeClass("active");
+    // intro 잠금이 걸려있으면 auto로 풀면 안됨 → 클래스 기준으로 복구
+    if ($("body").hasClass("intro-lock")) return;
+    $("body").css("overflow", "auto");
   }
 
-  $('.menu-item, .submenu-item').on('click', function (e) {
-    console.log('메뉴 클릭:', $(this).text());
-    closeSidebar();
-  });
 
-  $(window).on('resize', function () {
-    closeSidebar();
-  });
-
-
-  // intro
+  /* =====================
+     INTRO (첫 스크롤/터치로 reveal 후 스크롤 해제)
+  ===================== */
   $(".intro").addClass("show");
 
-  function handleIntroWheel(e) {
-    if (e.originalEvent.deltaY > 0) {
-      $(".intro_i").css("opacity", "0");
+  let introUnlocked = false;
+  let introAnimating = false;
+
+  function lockIntroScroll() {
+    $("body").addClass("intro-lock").css("overflow", "hidden");
+  }
+
+  function unlockIntroScroll() {
+    $("body").removeClass("intro-lock").css("overflow", "auto");
+  }
+
+  function revealIntro() {
+    if (introUnlocked || introAnimating) return;
+
+    introAnimating = true;
+    $(".intro").addClass("reveal");
+
+    setTimeout(function () {
+      introUnlocked = true;
+      introAnimating = false;
+
+      unlockIntroScroll();
+      detachIntroEvents();
+    }, 950);
+  }
+
+  // 이벤트 핸들러 (named function으로 만들어서 제거 가능하게)
+  function onIntroWheel(e) {
+    if (introUnlocked) return;
+    e.preventDefault();
+    if (e.deltaY > 0) revealIntro();
+  }
+
+  function onIntroTouchMove(e) {
+    if (introUnlocked) return;
+    e.preventDefault();
+    revealIntro();
+  }
+
+  function onIntroClick() {
+    if (introUnlocked) return;
+    revealIntro();
+  }
+
+  function attachIntroEvents() {
+    lockIntroScroll();
+
+    if ($(window).width() > 1024) {
+      window.addEventListener("wheel", onIntroWheel, { passive: false });
     } else {
-      $(".intro_i").css("opacity", "1");
+      window.addEventListener("touchmove", onIntroTouchMove, { passive: false });
+      $(window).on("click", onIntroClick);
     }
   }
 
-  function handleIntroClick() {
-    $(".intro_i").css("opacity", "0");
+  function detachIntroEvents() {
+    window.removeEventListener("wheel", onIntroWheel, { passive: false });
+    window.removeEventListener("touchmove", onIntroTouchMove, { passive: false });
+    $(window).off("click", onIntroClick);
   }
 
-  $(window).off("wheel click");
-
-  if ($(window).width() > 1024) {
-    // PC: wheel 이벤트 사용
-    $(window).on("wheel", handleIntroWheel);
-  } else {
-    // Mobile/tablet: click 이벤트 사용
-    $(window).on("click", handleIntroClick);
-  }
+  attachIntroEvents();
 
 
-  // story
-  var $imgBoxes = $('.story .imgbox');
-  var storySection = $('.story');
-  var storyHeight = storySection.outerHeight();
-  var storyTop = storySection.offset().top;
-
-  function checkScroll() {
-    var scrollTop = $(window).scrollTop();
-    var storyProgress = (scrollTop - storyTop) / (storyHeight - $(window).height());
-
-    // 스토리 섹션 범위 내에서만 동작
-    if (storyProgress >= 0 && storyProgress <= 1) {
-      var activeIndex = Math.floor(storyProgress * $imgBoxes.length);
-      activeIndex = Math.min(activeIndex, $imgBoxes.length - 1);
-
-      $imgBoxes.removeClass('active');
-      $imgBoxes.eq(activeIndex).addClass('active');
-    }
-  }
-
-  $(window).on('scroll', checkScroll);
-  $(window).on('resize', function () {
-    // 리사이즈 시 값 재계산
-    storyHeight = storySection.outerHeight();
-    storyTop = storySection.offset().top;
-  });
-
-  checkScroll();
-
-
-
-  // product
+  /* =====================
+     PRODUCT (탭 이미지 교체)
+  ===================== */
   const products = {
-    perfume: [
-      "./img/product1.png",
-      "./img/product2.png",
-      "./img/product3.png",
-      "./img/product4.png"
-    ],
-    diffuser: [
-      "./img/diffuser1.jpg",
-      "./img/diffuser1.jpg",
-      "./img/diffuser2.jpg",
-      "./img/diffuser3.jpg"
-    ],
-    candle: [
-      "./img/candle1.jpg",
-      "./img/candle1.jpg",
-      "./img/candle2.jpg",
-      "./img/candle2.jpg"
-    ],
-    care: [
-      "./img/care1.jpg",
-      "./img/care2.jpg",
-      "./img/care3.jpg",
-      "./img/care4.jpg"
-    ]
+    perfume: ["./img/product1.png", "./img/product2.png", "./img/product3.png", "./img/product4.png"],
+    diffuser: ["./img/diffuser1.jpg", "./img/diffuser1.jpg", "./img/diffuser2.jpg", "./img/diffuser3.jpg"],
+    candle: ["./img/candle1.jpg", "./img/candle1.jpg", "./img/candle2.jpg", "./img/candle2.jpg"],
+    care: ["./img/care1.jpg", "./img/care2.jpg", "./img/care3.jpg", "./img/care4.jpg"]
   };
 
-  // 메뉴 클릭 이벤트
-  $(".product_text ul li").click(function () {
-    // active 클래스 관리
+  $(".product_text ul li").on("click", function () {
     $(".product_text ul li").removeClass("active");
     $(this).addClass("active");
 
-    // 클릭한 메뉴의 data-type 읽기
-    let type = $(this).data("type");
+    const type = $(this).data("type");
 
-    // 이미지 교체
     $(".product_img img").each(function (index) {
       $(this).stop(true, true).fadeOut(200, function () {
         $(this).attr("src", products[type][index]).fadeIn(200);
@@ -153,7 +137,57 @@ $(function () {
     });
   });
 
+  /* =====================
+   STORY (PC scroll switch)
+===================== */
+const $story = $('.story');
+const $imgs = $('.story_img .imgbox');
+const imgCount = $imgs.length;
 
+function handleStoryScroll() {
+  if (!$story.length) return;
 
-  ///////////////////////
+  const scrollTop = $(window).scrollTop();
+  const winH = $(window).height();
+
+  const start = $story.offset().top;
+  const end = start + $story.outerHeight() - winH;
+
+  if (end <= start) return activate(0);
+
+  if (scrollTop <= start) return activate(0);
+  if (scrollTop >= end) return activate(imgCount - 1);
+
+  const progress = (scrollTop - start) / (end - start);
+  const index = Math.floor(progress * imgCount);
+
+  activate(index);
+}
+
+function activate(index) {
+  index = Math.max(0, Math.min(index, imgCount - 1));
+  $imgs.removeClass('active');
+  $imgs.eq(index).addClass('active');
+}
+
+function setStoryMode() {
+  const isMobilePad = window.innerWidth <= 1024;
+
+  $(window).off('scroll.story resize.story');
+
+  if (isMobilePad) {
+    // 1024 이하: 전환 OFF, 전부 표시
+    $imgs.addClass('active');
+  } else {
+    // 1025 이상: 전환 ON
+    $imgs.removeClass('active').eq(0).addClass('active');
+    $(window).on('scroll.story resize.story', handleStoryScroll);
+    handleStoryScroll();
+  }
+}
+
+$(window).on('resize', setStoryMode);
+setStoryMode();
+
+/////////////////////////////
 });
